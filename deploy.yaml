@@ -16,6 +16,7 @@
       loop:
         - /root/hadoop-1.2.1-1.x86_64.rpm
         - /root/jdk-8u171-linux-x64.rpm
+      notify: Install Hadoop
 
 
     - name: Installing JDK
@@ -25,16 +26,18 @@
         disable_gpg_check: yes
 
 
+    - name: Freeing RAM
+      command:
+        cmd: echo 3 > /proc/sys/vm/drop_caches
+        warn: no
+
+
+  handlers:
     - name: Installing Hadoop
       command:
         cmd: rpm -i /root/hadoop-1.2.1-1.x86_64.rpm --force 
         warn: no
 
-
-    - name: Freeing RAM
-      command:
-        cmd: echo 3 > /proc/sys/vm/drop_caches
-        warn: no
 
 - import_playbook: master.yaml
 

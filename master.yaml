@@ -15,7 +15,7 @@
       file:
         state: directory
         path: "{{ dir }}"
-      notify: Formatting Hadoop Master storage
+      #notify: Formatting Hadoop Master storage
 
 
     - name: Writing hdfs-site
@@ -49,14 +49,16 @@
         flat: yes
 
 
-    - name: Starting Hadoop Master service
-      command:
-        cmd: hadoop-daemon.sh start namenode
-        warn: no
-
-
-  handlers:
     - name: Formatting Hadoop Master storage
       command:
-        cmd: echo Y | hadoop namenode -format
+        cmd: "hadoop namenode -format -force"
         warn: no
+ 
+
+    - name: Starting Hadoop Master service
+      command:
+        cmd: "hadoop-daemon.sh start namenode"
+        warn: no
+
+
+

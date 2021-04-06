@@ -34,5 +34,5 @@
 
     - name: Starting Hadoop Slave service
       command:
-        cmd: hadoop-daemon.sh start datanode
+        cmd: "hadoop-daemon.sh start datanode"
         warn: no

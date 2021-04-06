@@ -29,4 +29,4 @@
 
     - name: Waiting for EC2 Instances to come online
       pause:
-        minutes: 3
+        seconds: 10
