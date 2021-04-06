@@ -23,13 +23,13 @@
     - name: Writing hdfs-site
       template:
         src: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/hdfs-site.xml
-        dest: /etc/hadoop/hdfs-site.xml ##? Is path correct?
+        dest: /etc/hadoop/hdfs-site.xml
 
 
     - name: Writing core-site
       template:
         src: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/core-site-dn.xml.j2
-        dest: /etc/hadoop/core-site.xml ##? Is path correct?
+        dest: /etc/hadoop/core-site.xml
 
 
     - name: Starting Hadoop Slave service
