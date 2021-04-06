@@ -7,13 +7,14 @@
     - node_name: name
     - ip: 0.0.0.0
     - ansible_ssh_private_key_file: /root/ARTH_DN.pem
+    - dir: /nn
   tasks:
 
 
     - name: Creating directory for Hadoop MasterNode storage
       file:
         state: directory
-        path: /nn
+        path: "{{ dir }}"
       notify: Formatting Hadoop Master storage
 
 
@@ -21,12 +22,31 @@
       template:
         src: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/hdfs-site.xml
         dest: /etc/hadoop/hdfs-site.xml
-    
+
 
     - name: Writing core-site
       template:
         src: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/core-site-nn.xml.j2
         dest: /etc/hadoop/core-site.xml
+
+
+    - name: Retrieving Public IP
+      ipify_facts:
+      register: pub_ip
+
+
+    - name: Writing variable file
+      lineinfile:
+        path: '/root/varFile.yaml'
+        line: "master_ip: {{ pub_ip['ansible_facts']['ipify_public_ip'] }}"
+        create: yes
+
+
+    - name: Fetching variable file
+      fetch:
+        src: /root/varFile.yaml
+        dest: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/
+        flat: yes
 
 
     - name: Starting Hadoop Master service
@@ -35,8 +55,8 @@
         warn: no
 
 
-    handlers:
+  handlers:
     - name: Formatting Hadoop Master storage
       command:
-        cmd: hadoop namenode -format
+        cmd: echo Y | hadoop namenode -format
         warn: no

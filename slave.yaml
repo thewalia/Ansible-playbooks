@@ -6,29 +6,30 @@
   vars:
     - node_name: data
     - ansible_ssh_private_key_file: /root/ARTH_DN.pem
+    - dir: /dn
   tasks:
 
     - name: Creating directory for Hadoop DataNode storage
       file:
         state: directory
-        path: /dn
+        path: "{{ dir }}"
 
 
-    - name: Retrieving MasterNode Public ip
-      ipify_facts:
-      register: public_ip
+    - name: Retrieving variables from variable file
+      include_vars:
+        file: varFile.yaml
 
 
     - name: Writing hdfs-site
       template:
         src: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/hdfs-site.xml
-        dest: /etc/hadoop ##? Is path correct?
+        dest: /etc/hadoop/hdfs-site.xml ##? Is path correct?
 
 
     - name: Writing core-site
       template:
         src: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/core-site-dn.xml.j2
-        dest: /etc/hadoop/ ##? Is path correct?
+        dest: /etc/hadoop/core-site.xml ##? Is path correct?
 
 
     - name: Starting Hadoop Slave service

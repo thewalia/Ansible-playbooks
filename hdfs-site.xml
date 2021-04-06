@@ -3,7 +3,7 @@
 
 <configuration>
 <property>
-<name>dfs.{{ node }}.dir</name>
-<value>/nn</value>
+<name>dfs.{{ node_name }}.dir</name>
+<value>{{ dir }}</value>
 </property>
 </configuration>

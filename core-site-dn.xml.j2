@@ -4,6 +4,6 @@
 <configuration>
 <property>
 <name>fs.default.name</name>
-<value>hdfs:{{ public_ip['ansible_facts']['ipify_public_ip'] }}:9001</value>
+<value>hdfs:{{ master_ip }}:9001</value>
 </property>
 </configuration>
