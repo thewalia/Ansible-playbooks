@@ -1,0 +1,37 @@
+---
+- name: Writing configuration files for Hadoop Slave
+  hosts: tag_Name_Arth_DN
+  gather_facts: false
+  remote_user: ec2-user
+  vars:
+    - node_name: data
+    - ansible_ssh_private_key_file: /root/ARTH_DN.pem
+  tasks:
+
+    - name: Creating directory for Hadoop DataNode storage
+      file:
+        state: directory
+        path: /dn
+
+
+    - name: Retrieving MasterNode Public ip
+      ipify_facts:
+      register: public_ip
+
+
+    - name: Writing hdfs-site
+      template:
+        src: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/hdfs-site.xml
+        dest: /etc/hadoop ##? Is path correct?
+
+
+    - name: Writing core-site
+      template:
+        src: /root/arth_ws/ansible_ws/hadoop/hadoop_ws/core-site-dn.xml.j2
+        dest: /etc/hadoop/ ##? Is path correct?
+
+
+    - name: Starting Hadoop Slave service
+      command:
+        cmd: hadoop-daemon.sh start datanode
+        warn: no

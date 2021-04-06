@@ -1,0 +1,32 @@
+---
+- name: Launching Instances
+  hosts: localhost
+  gather_facts: false
+  vars:
+    - instance_ids:
+      - 'i-034fbe30e5e45dd0d'
+      - 'i-016be3eefc0a0de66'
+    
+    - region: ap-south-1
+  tasks:
+
+    - name: Solving AWS SDK dependencies
+      pip:
+        name: "{{ item }}"
+      loop:
+        - boto
+        - boto3
+        - botocore
+
+
+    - name: launching AWS EC2 Instances
+      amazon.aws.ec2:
+        instance_ids: "{{ instance_ids }}"
+        state: running
+        wait: true
+        region: "{{ region }}"
+
+
+    - name: Waiting for EC2 Instances to come online
+      pause:
+        minutes: 3
